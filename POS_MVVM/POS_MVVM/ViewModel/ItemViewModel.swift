@@ -26,19 +26,22 @@ class ItemHeaderModel {
     var title: String
     var quantity: Int
     var tax: Double
-    var netPrice: Double
+    var basePrice: Double // without tax
+    var netPrice: Double {
+        return ((1 + self.tax/100) * self.netPrice)
+    }
     var grossPrice: Double {    // INCLUDING TAX
-        return Double(self.quantity) * ((1 + self.tax/100) * self.netPrice)
+        return Double(self.quantity) * self.netPrice
     }
     
     init(title: String,
          quantity: Int,
          tax: Double,
-         netPrice: Double) {
+         basePrice: Double) {
         self.title = title
         self.quantity = quantity
         self.tax = tax
-        self.netPrice = netPrice
+        self.basePrice = basePrice
     }
 }
 
@@ -63,7 +66,9 @@ class SectionModel {
 
 class ItemViewModel {
     
-    private var sections: [SectionModel] = []
+    var sections: [SectionModel] = []
+    private var grandTotal: Double = 0.0
+    private var totalTax: Double = 0.0
     
     weak var delegate: ItemViewModelDelegate?
     
@@ -99,8 +104,8 @@ class ItemViewModel {
                 let bartenderModel = BartenderCellModel(time: "1:00 PM", action: "REMOVED")
                 sectionModel.cellModels.append(bartenderModel)
             }
+            self.reloadData()
         }
-        self.reloadData()
     }
     
     private func calculateBill() {

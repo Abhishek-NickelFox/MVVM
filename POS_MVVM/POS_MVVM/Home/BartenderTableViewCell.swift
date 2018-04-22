@@ -1,0 +1,21 @@
+//
+//  BartenderTableViewCell.swift
+//  POS_MVVM
+//
+//  Created by Abhishek on 22/04/18.
+//  Copyright © 2018 Marvel. All rights reserved.
+//
+
+import UIKit
+
+class BartenderTableViewCell: UITableViewCell {
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+}
