@@ -26,24 +26,27 @@ class ItemHeaderModel {
     var title: String
     var quantity: Int
     var tax: Double
-    var basePrice: Double // without tax
+    var basePrice: Double // WITHOUT TAX
+    var isSelected: Bool
     
-    var netPrice: Double {
+    var netPrice: Double { // INCLUDING TAX
         return ((1 + self.tax/100) * self.basePrice)
     }
     
-    var grossPrice: Double {    // INCLUDING TAX
+    var grossPrice: Double {    // INCLUDING QUANTITY
         return Double(self.quantity) * self.netPrice
     }
     
     init(title: String,
          quantity: Int,
          tax: Double,
-         basePrice: Double) {
+         basePrice: Double,
+         isSelected: Bool = false) {
         self.title = title
         self.quantity = quantity
         self.tax = tax
         self.basePrice = basePrice
+        self.isSelected = isSelected
     }
 }
 

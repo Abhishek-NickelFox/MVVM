@@ -11,6 +11,7 @@ import UIKit
 protocol ItemHeaderViewDelegate: class {
     func increaseQuantity(headerView: ItemHeaderView)
     func decreaseQuantity(headerView: ItemHeaderView)
+    func didTap(headerView: ItemHeaderView)
 }
 
 class ItemHeaderView: UITableViewHeaderFooterView {
@@ -20,6 +21,7 @@ class ItemHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var netPriceLabel: UILabel!
     @IBOutlet weak var taxLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var bgView: UIView!
     
     weak var delegate: ItemHeaderViewDelegate?
     
@@ -27,6 +29,13 @@ class ItemHeaderView: UITableViewHeaderFooterView {
         didSet {
             self.configure(item)
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let gesture = UITapGestureRecognizer(target: self,
+                                             action: #selector(handleTapGesture(_:)))
+        self.bgView.addGestureRecognizer(gesture)
     }
     
     private func configure(_ item: ItemHeaderModel?) {
@@ -37,6 +46,10 @@ class ItemHeaderView: UITableViewHeaderFooterView {
             self.taxLabel.text = String(model.tax)
             self.totalLabel.text = String(model.grossPrice)
         }
+    }
+    
+    @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
+        self.delegate?.didTap(headerView: self)
     }
     
     @IBAction func increaseQuantity(_ sender: UIButton) {

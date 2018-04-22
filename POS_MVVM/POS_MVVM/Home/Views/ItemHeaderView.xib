@@ -114,6 +114,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="bgView" destination="XQn-km-my1" id="Cx5-48-LSY"/>
                 <outlet property="netPriceLabel" destination="0ye-iL-R34" id="XGi-1u-uNV"/>
                 <outlet property="quantityLabel" destination="FjR-rz-7hN" id="xhe-aC-HfQ"/>
                 <outlet property="taxLabel" destination="ecV-lf-d4f" id="Pza-cV-CNb"/>

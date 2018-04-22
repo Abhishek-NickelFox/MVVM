@@ -63,7 +63,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.sections[section].cellModels.count
+        let sectionModel = self.viewModel.sections[section]
+        return sectionModel.headerModel.isSelected ? sectionModel.cellModels.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,5 +111,11 @@ extension ViewController: ItemHeaderViewDelegate {
     func decreaseQuantity(headerView: ItemHeaderView) {
         guard let model = headerView.item else { return }
         self.viewModel.remove(item: model)
+    }
+    
+    func didTap(headerView: ItemHeaderView) {
+        guard let model = headerView.item else { return }
+        model.isSelected = !model.isSelected
+        self.tableView.reloadData()
     }
 }
