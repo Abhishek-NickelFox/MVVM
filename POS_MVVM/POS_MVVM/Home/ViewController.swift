@@ -44,14 +44,6 @@ class ViewController: UIViewController {
     }
 }
 
-
-extension ViewController: ItemViewModelDelegate {
-    
-    func reloadData() {
-        self.tableView.reloadData()
-    }
-}
-
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
  
     func setup() {
@@ -87,6 +79,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             withIdentifier: "ItemHeaderView"
         ) as! ItemHeaderView
         headerView.item = self.viewModel.sections[section].headerModel
+        headerView.delegate = self
         return headerView
     }
     
@@ -98,4 +91,24 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return 60.0
     }
     
+}
+
+extension ViewController: ItemViewModelDelegate {
+    
+    func reloadData() {
+        self.tableView.reloadData()
+    }
+}
+
+extension ViewController: ItemHeaderViewDelegate {
+    
+    func increaseQuantity(headerView: ItemHeaderView) {
+        guard let model = headerView.item else { return }
+        self.viewModel.add(item: model)
+    }
+    
+    func decreaseQuantity(headerView: ItemHeaderView) {
+        guard let model = headerView.item else { return }
+        self.viewModel.remove(item: model)
+    }
 }

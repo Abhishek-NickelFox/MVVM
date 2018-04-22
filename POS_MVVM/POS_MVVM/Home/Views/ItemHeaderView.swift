@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol ItemHeaderViewDelegate: class {
+    func increaseQuantity(headerView: ItemHeaderView)
+    func decreaseQuantity(headerView: ItemHeaderView)
+}
+
 class ItemHeaderView: UITableViewHeaderFooterView {
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -15,6 +20,8 @@ class ItemHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var netPriceLabel: UILabel!
     @IBOutlet weak var taxLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
+    
+    weak var delegate: ItemHeaderViewDelegate?
     
     var item: ItemHeaderModel? {
         didSet {
@@ -33,10 +40,10 @@ class ItemHeaderView: UITableViewHeaderFooterView {
     }
     
     @IBAction func increaseQuantity(_ sender: UIButton) {
-        
+        self.delegate?.increaseQuantity(headerView: self)
     }
     
     @IBAction func decreaseQuantity(_ sender: UIButton) {
-        
+        self.delegate?.decreaseQuantity(headerView: self)
     }
 }
