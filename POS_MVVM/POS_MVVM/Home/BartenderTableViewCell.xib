@@ -56,6 +56,7 @@
                             <constraint firstAttribute="trailing" secondItem="uN0-oc-Q8y" secondAttribute="trailing" constant="15" id="r3u-nX-wS5"/>
                             <constraint firstItem="Bih-R4-241" firstAttribute="leading" secondItem="2TQ-I0-vg4" secondAttribute="trailing" constant="10" id="snU-2p-jwh"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="eC8-Ko-LSR"/>
                     </view>
                 </subviews>
                 <constraints>
@@ -64,8 +65,14 @@
                     <constraint firstItem="00H-PV-TsE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ME2-bz-0xK"/>
                     <constraint firstItem="00H-PV-TsE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="W5q-jm-qh2"/>
                 </constraints>
+                <viewLayoutGuide key="safeArea" id="dmE-O4-pIv"/>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="actionLabel" destination="uN0-oc-Q8y" id="kgt-Hx-lqc"/>
+                <outlet property="nameLabel" destination="2TQ-I0-vg4" id="YtJ-qW-pPe"/>
+                <outlet property="timeLabel" destination="Bih-R4-241" id="r8C-SY-t60"/>
+            </connections>
             <point key="canvasLocation" x="115" y="60.5"/>
         </tableViewCell>
     </objects>

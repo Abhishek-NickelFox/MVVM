@@ -35,14 +35,23 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjF-E8-3RL">
                                         <rect key="frame" x="248.5" y="20" width="111.5" height="30"/>
                                         <state key="normal" title="Scotch"/>
+                                        <connections>
+                                            <action selector="addScotch:" destination="BYZ-38-t0r" eventType="touchDown" id="dmO-HJ-7Yy"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqG-at-hc1">
                                         <rect key="frame" x="131.5" y="20" width="112" height="30"/>
                                         <state key="normal" title="Beer"/>
+                                        <connections>
+                                            <action selector="addBeer:" destination="BYZ-38-t0r" eventType="touchDown" id="cCV-Qy-6ZT"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rsq-YH-bGZ">
                                         <rect key="frame" x="15" y="20" width="111.5" height="30"/>
                                         <state key="normal" title="Wine"/>
+                                        <connections>
+                                            <action selector="addWine:" destination="BYZ-38-t0r" eventType="touchDown" id="DzX-uh-7AH"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -81,6 +90,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Z9N-W3-Lva"/>
+                    <connections>
+                        <outlet property="tableView" destination="hBo-b4-ovf" id="4TJ-Lp-DXh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

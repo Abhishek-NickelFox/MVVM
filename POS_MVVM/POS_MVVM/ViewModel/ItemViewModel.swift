@@ -27,9 +27,11 @@ class ItemHeaderModel {
     var quantity: Int
     var tax: Double
     var basePrice: Double // without tax
+    
     var netPrice: Double {
-        return ((1 + self.tax/100) * self.netPrice)
+        return ((1 + self.tax/100) * self.basePrice)
     }
+    
     var grossPrice: Double {    // INCLUDING TAX
         return Double(self.quantity) * self.netPrice
     }

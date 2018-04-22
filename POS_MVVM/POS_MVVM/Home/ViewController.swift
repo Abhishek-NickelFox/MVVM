@@ -24,15 +24,31 @@ class ViewController: UIViewController {
     }
 
     @IBAction func addWine(_ sender: UIButton) {
-        
+        self.addModel(title: "Wine")
     }
     
     @IBAction func addBeer(_ sender: UIButton) {
-        
+        self.addModel(title: "Beer")
     }
     
     @IBAction func addScotch(_ sender: UIButton) {
-        
+        self.addModel(title: "Scotch")
+    }
+    
+    private func addModel(title: String) {
+        let itemModel = ItemHeaderModel(title: title,
+                                        quantity: 1,
+                                        tax: 2.5,
+                                        basePrice: 100.0)
+        self.viewModel.add(item: itemModel)
+    }
+}
+
+
+extension ViewController: ItemViewModelDelegate {
+    
+    func reloadData() {
+        self.tableView.reloadData()
     }
 }
 
@@ -41,6 +57,13 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func setup() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.viewModel.delegate = self
+        self.tableView.register(UINib(nibName: "BartenderTableViewCell",
+                                      bundle: nil),
+                                forCellReuseIdentifier: "BartenderTableViewCell")
+        self.tableView.register(UINib(nibName: "ItemHeaderView",
+                                      bundle: nil),
+                                forHeaderFooterViewReuseIdentifier: "ItemHeaderView")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -52,15 +75,19 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "")
-        let _ = self.viewModel.sections[indexPath.section].cellModels[indexPath.row]
-        return cell!
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "BartenderTableViewCell"
+        ) as! BartenderTableViewCell
+        cell.item = self.viewModel.sections[indexPath.section].cellModels[indexPath.row]
+        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "")
-        let _ = self.viewModel.sections[section]
-        return header!
+        let headerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: "ItemHeaderView"
+        ) as! ItemHeaderView
+        headerView.item = self.viewModel.sections[section].headerModel
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -72,4 +99,3 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-
