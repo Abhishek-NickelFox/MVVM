@@ -82,6 +82,7 @@ class ItemViewModel {
     weak var delegate: ItemViewModelDelegate?
     
     func reloadData() {
+        self.calculateBill()
         self.delegate?.reloadData()
     }
     
@@ -98,7 +99,6 @@ class ItemViewModel {
             let sectionModel = SectionModel(headerModel: item, cellModels: [bartenderModel])
             self.sections.append(sectionModel)
         }
-        self.calculateBill()
         self.reloadData()
     }
     
@@ -114,7 +114,6 @@ class ItemViewModel {
                 let bartenderModel = BartenderCellModel(time: "1:00 PM", action: "REMOVED")
                 sectionModel.cellModels.append(bartenderModel)
             }
-            self.calculateBill()
             self.reloadData()
         }
     }
