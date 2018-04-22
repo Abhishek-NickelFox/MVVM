@@ -26,18 +26,18 @@ class ItemHeaderModel {
     var title: String
     var quantity: Int
     var tax: Double
-    var basePrice: Double // WITHOUT TAX
+    var basePrice: Double         // WITHOUT TAX
     var isSelected: Bool
     
-    var netPrice: Double { // INCLUDING TAX
+    var netPrice: Double {        // INCLUDING TAX
         return ((1 + self.tax/100) * self.basePrice)
     }
     
-    var grossPrice: Double {    // INCLUDING QUANTITY
+    var grossPrice: Double {      // INCLUDING QUANTITY
         return Double(self.quantity) * self.netPrice
     }
     
-    var taxableAmount: Double { // TAX AMOUNT
+    var taxableAmount: Double {   // TAX AMOUNT
         return (self.tax/100) * self.basePrice
     }
     
