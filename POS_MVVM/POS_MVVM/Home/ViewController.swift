@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var taxLabel: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
     
     var viewModel = ItemViewModel()
     
@@ -41,6 +43,11 @@ class ViewController: UIViewController {
                                         tax: 2.5,
                                         basePrice: 100.0)
         self.viewModel.add(item: itemModel)
+    }
+    
+    private func updateBill() {
+        self.taxLabel.text = "$ \(self.viewModel.totalTax)"
+        self.totalLabel.text = "$ \(self.viewModel.grandTotal)"
     }
 }
 
@@ -97,6 +104,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: ItemViewModelDelegate {
     
     func reloadData() {
+        self.updateBill()
         self.tableView.reloadData()
     }
 }

@@ -37,6 +37,10 @@ class ItemHeaderModel {
         return Double(self.quantity) * self.netPrice
     }
     
+    var taxableAmount: Double { // TAX AMOUNT
+        return (self.tax/100) * self.basePrice
+    }
+    
     init(title: String,
          quantity: Int,
          tax: Double,
@@ -72,8 +76,8 @@ class SectionModel {
 class ItemViewModel {
     
     var sections: [SectionModel] = []
-    private var grandTotal: Double = 0.0
-    private var totalTax: Double = 0.0
+    var grandTotal: Double = 0.0
+    var totalTax: Double = 0.0
     
     weak var delegate: ItemViewModelDelegate?
     
@@ -94,6 +98,7 @@ class ItemViewModel {
             let sectionModel = SectionModel(headerModel: item, cellModels: [bartenderModel])
             self.sections.append(sectionModel)
         }
+        self.calculateBill()
         self.reloadData()
     }
     
@@ -109,12 +114,18 @@ class ItemViewModel {
                 let bartenderModel = BartenderCellModel(time: "1:00 PM", action: "REMOVED")
                 sectionModel.cellModels.append(bartenderModel)
             }
+            self.calculateBill()
             self.reloadData()
         }
     }
     
     private func calculateBill() {
-        
+        self.totalTax = 0.0
+        self.grandTotal = 0.0
+        self.sections.forEach {
+            self.totalTax += $0.headerModel.taxableAmount
+            self.grandTotal += $0.headerModel.grossPrice
+        }
     }
     
 }
