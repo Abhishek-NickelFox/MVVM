@@ -16,6 +16,8 @@ class ProductListViewController: UIViewController {
     
     var viewModel = ProductListViewModel()
     
+    var handler: ProductQuantityHandler!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
@@ -42,7 +44,7 @@ class ProductListViewController: UIViewController {
                               quantity: 1,
                               tax: 2.5,
                               basePrice: 100.0)
-        let headerModel = ProductHeaderModel(product: product, handler: nil)
+        let headerModel = ProductHeaderModel(product: product, handler: self.handler)
         self.viewModel.add(headerModel: headerModel)
     }
     
@@ -64,6 +66,14 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
         self.tableView.register(UINib(nibName: "ProductHeaderView",
                                       bundle: nil),
                                 forHeaderFooterViewReuseIdentifier: "ProductHeaderView")
+        
+        self.handler = { (isIncreasing, headerModel) in
+            if isIncreasing {
+                self.viewModel.add(headerModel: headerModel)
+            } else {
+                self.viewModel.remove(headerModel: headerModel)
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -111,17 +121,7 @@ extension ProductListViewController: ProductListViewModelDelegate {
 }
 
 extension ProductListViewController: ProductHeaderViewDelegate {
-    
-    func increaseQuantity(headerView: ProductHeaderView) {
-        guard let headerModel = headerView.item else { return }
-        self.viewModel.add(headerModel: headerModel)
-    }
-    
-    func decreaseQuantity(headerView: ProductHeaderView) {
-        guard let product = headerView.item else { return }
-        self.viewModel.remove(headerModel: product)
-    }
-    
+
     func didTap(headerView: ProductHeaderView) {
         guard let headerModel = headerView.item else { return }
         headerModel.isSelected = !headerModel.isSelected

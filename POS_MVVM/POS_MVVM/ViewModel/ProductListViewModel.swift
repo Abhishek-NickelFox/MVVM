@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias ProductTapHandler = (Product) -> Void
+typealias ProductQuantityHandler = (_ isIncreasing: Bool, _ product: ProductHeaderModel) -> Void
 
 class BartenderCellModel {
     
@@ -27,11 +27,11 @@ class ProductHeaderModel {
     
     var product: Product
     var isSelected: Bool
-    var handler: ProductTapHandler?
+    var handler: ProductQuantityHandler?
     
     init(product: Product,
          isSelected: Bool = false,
-         handler: ProductTapHandler? = nil) {
+         handler: ProductQuantityHandler? = nil) {
         self.product = product
         self.isSelected = isSelected
         self.handler = handler

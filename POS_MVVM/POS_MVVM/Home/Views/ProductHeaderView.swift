@@ -9,8 +9,6 @@
 import UIKit
 
 protocol ProductHeaderViewDelegate: class {
-    func increaseQuantity(headerView: ProductHeaderView)
-    func decreaseQuantity(headerView: ProductHeaderView)
     func didTap(headerView: ProductHeaderView)
 }
 
@@ -27,7 +25,7 @@ class ProductHeaderView: UITableViewHeaderFooterView {
     
     var item: ProductHeaderModel? {
         didSet {
-            self.configure(item)
+            self.configure(item: item)
         }
     }
     
@@ -38,7 +36,7 @@ class ProductHeaderView: UITableViewHeaderFooterView {
         self.bgView.addGestureRecognizer(gesture)
     }
     
-    private func configure(_ item: ProductHeaderModel?) {
+    private func configure(item: ProductHeaderModel?) {
         if let headerModel = item {
             self.titleLabel.text = headerModel.product.title
             self.quantityLabel.text = String(headerModel.product.quantity)
@@ -49,14 +47,18 @@ class ProductHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
-        self.delegate?.didTap(headerView: self)
+       self.delegate?.didTap(headerView: self)
     }
     
     @IBAction func increaseQuantity(_ sender: UIButton) {
-        self.delegate?.increaseQuantity(headerView: self)
+        guard let headerModel = self.item,
+              let handler = headerModel.handler else { return }
+        handler(true, headerModel)
     }
     
     @IBAction func decreaseQuantity(_ sender: UIButton) {
-        self.delegate?.decreaseQuantity(headerView: self)
+        guard let headerModel = self.item,
+            let handler = headerModel.handler else { return }
+        handler(false, headerModel)
     }
 }
