@@ -1,5 +1,5 @@
 //
-//  ItemViewModel.swift
+//  ProductListViewModel.swift
 //  POS_MVVM
 //
 //  Created by Abhishek on 22/04/18.
@@ -21,7 +21,7 @@ class BartenderCellModel {
     }
 }
 
-class ItemHeaderModel {
+class Product {
     
     var title: String
     var quantity: Int
@@ -54,17 +54,17 @@ class ItemHeaderModel {
     }
 }
 
-protocol ItemViewModelDelegate: class {
+protocol ProductListViewModelDelegate: class {
     func reloadData()
 }
 
 class SectionModel {
     
-    var headerModel: ItemHeaderModel
+    var headerModel: Product
     var cellModels: [BartenderCellModel]
     var footerModel: Any?
     
-    init(headerModel: ItemHeaderModel,
+    init(headerModel: Product,
          cellModels: [BartenderCellModel],
          footerModel: Any? = nil) {
         self.headerModel = headerModel
@@ -73,22 +73,22 @@ class SectionModel {
     }
 }
 
-class ItemViewModel {
+class ProductListViewModel {
     
     var sections: [SectionModel] = []
     var grandTotal: Double = 0.0
     var totalTax: Double = 0.0
     
-    weak var delegate: ItemViewModelDelegate?
+    weak var delegate: ProductListViewModelDelegate?
     
     func reloadData() {
         self.calculateBill()
         self.delegate?.reloadData()
     }
     
-    func add(item: ItemHeaderModel) {
+    func add(product: Product) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.title == item.title
+            return model.headerModel.title == product.title
         }) {
             let sectionModel = self.sections[index]
             sectionModel.headerModel.quantity += 1
@@ -96,15 +96,15 @@ class ItemViewModel {
             sectionModel.cellModels.append(bartenderModel)
         } else {
             let bartenderModel = BartenderCellModel(time: "9:38 AM", action: "ADDED")
-            let sectionModel = SectionModel(headerModel: item, cellModels: [bartenderModel])
+            let sectionModel = SectionModel(headerModel: product, cellModels: [bartenderModel])
             self.sections.append(sectionModel)
         }
         self.reloadData()
     }
     
-    func remove(item: ItemHeaderModel) {
+    func remove(product: Product) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.title == item.title
+            return model.headerModel.title == product.title
         }) {
             let sectionModel = self.sections[index]
             sectionModel.headerModel.quantity -= 1

@@ -1,5 +1,5 @@
 //
-//  ItemHeaderView.swift
+//  ProductHeaderView.swift
 //  POS_MVVM
 //
 //  Created by Abhishek on 22/04/18.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol ItemHeaderViewDelegate: class {
-    func increaseQuantity(headerView: ItemHeaderView)
-    func decreaseQuantity(headerView: ItemHeaderView)
-    func didTap(headerView: ItemHeaderView)
+protocol ProductHeaderViewDelegate: class {
+    func increaseQuantity(headerView: ProductHeaderView)
+    func decreaseQuantity(headerView: ProductHeaderView)
+    func didTap(headerView: ProductHeaderView)
 }
 
-class ItemHeaderView: UITableViewHeaderFooterView {
+class ProductHeaderView: UITableViewHeaderFooterView {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
@@ -23,9 +23,9 @@ class ItemHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var bgView: UIView!
     
-    weak var delegate: ItemHeaderViewDelegate?
+    weak var delegate: ProductHeaderViewDelegate?
     
-    var item: ItemHeaderModel? {
+    var item: Product? {
         didSet {
             self.configure(item)
         }
@@ -38,13 +38,13 @@ class ItemHeaderView: UITableViewHeaderFooterView {
         self.bgView.addGestureRecognizer(gesture)
     }
     
-    private func configure(_ item: ItemHeaderModel?) {
-        if let model = item {
-            self.titleLabel.text = model.title
-            self.quantityLabel.text = String(model.quantity)
-            self.netPriceLabel.text = String(model.netPrice)
-            self.taxLabel.text = String(model.tax)
-            self.totalLabel.text = String(model.grossPrice)
+    private func configure(_ item: Product?) {
+        if let product = item {
+            self.titleLabel.text = product.title
+            self.quantityLabel.text = String(product.quantity)
+            self.netPriceLabel.text = String(product.netPrice)
+            self.taxLabel.text = String(product.tax)
+            self.totalLabel.text = String(product.grossPrice)
         }
     }
     

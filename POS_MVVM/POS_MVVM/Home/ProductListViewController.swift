@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ProductListViewController.swift
 //  POS_MVVM
 //
 //  Created by Abhishek on 22/04/18.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ProductListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var taxLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     
-    var viewModel = ItemViewModel()
+    var viewModel = ProductListViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +38,11 @@ class ViewController: UIViewController {
     }
     
     private func addModel(title: String) {
-        let itemModel = ItemHeaderModel(title: title,
-                                        quantity: 1,
-                                        tax: 2.5,
-                                        basePrice: 100.0)
-        self.viewModel.add(item: itemModel)
+        let product = Product(title: title,
+                                quantity: 1,
+                                tax: 2.5,
+                                basePrice: 100.0)
+        self.viewModel.add(product: product)
     }
     
     private func updateBill() {
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension ProductListViewController: UITableViewDelegate, UITableViewDataSource {
  
     func setup() {
         self.tableView.delegate = self
@@ -60,9 +60,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         self.tableView.register(UINib(nibName: "BartenderTableViewCell",
                                       bundle: nil),
                                 forCellReuseIdentifier: "BartenderTableViewCell")
-        self.tableView.register(UINib(nibName: "ItemHeaderView",
+        self.tableView.register(UINib(nibName: "ProductHeaderView",
                                       bundle: nil),
-                                forHeaderFooterViewReuseIdentifier: "ItemHeaderView")
+                                forHeaderFooterViewReuseIdentifier: "ProductHeaderView")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -84,8 +84,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: "ItemHeaderView"
-        ) as! ItemHeaderView
+            withIdentifier: "ProductHeaderView"
+        ) as! ProductHeaderView
         headerView.item = self.viewModel.sections[section].headerModel
         headerView.delegate = self
         return headerView
@@ -101,7 +101,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-extension ViewController: ItemViewModelDelegate {
+extension ProductListViewController: ProductListViewModelDelegate {
     
     func reloadData() {
         self.updateBill()
@@ -109,19 +109,19 @@ extension ViewController: ItemViewModelDelegate {
     }
 }
 
-extension ViewController: ItemHeaderViewDelegate {
+extension ProductListViewController: ProductHeaderViewDelegate {
     
-    func increaseQuantity(headerView: ItemHeaderView) {
-        guard let model = headerView.item else { return }
-        self.viewModel.add(item: model)
+    func increaseQuantity(headerView: ProductHeaderView) {
+        guard let product = headerView.item else { return }
+        self.viewModel.add(product: product)
     }
     
-    func decreaseQuantity(headerView: ItemHeaderView) {
-        guard let model = headerView.item else { return }
-        self.viewModel.remove(item: model)
+    func decreaseQuantity(headerView: ProductHeaderView) {
+        guard let product = headerView.item else { return }
+        self.viewModel.remove(product: product)
     }
     
-    func didTap(headerView: ItemHeaderView) {
+    func didTap(headerView: ProductHeaderView) {
         guard let model = headerView.item else { return }
         model.isSelected = !model.isSelected
         self.tableView.reloadData()
