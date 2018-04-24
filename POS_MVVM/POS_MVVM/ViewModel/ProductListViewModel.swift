@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias ProductTapHandler = (Product) -> Void
+
 class BartenderCellModel {
     
     var name: String
@@ -21,13 +23,27 @@ class BartenderCellModel {
     }
 }
 
+class ProductHeaderModel {
+    
+    var product: Product
+    var isSelected: Bool
+    var handler: ProductTapHandler?
+    
+    init(product: Product,
+         isSelected: Bool = false,
+         handler: ProductTapHandler? = nil) {
+        self.product = product
+        self.isSelected = isSelected
+        self.handler = handler
+    }
+}
+
 class Product {
     
     var title: String
     var quantity: Int
     var tax: Double
     var basePrice: Double         // WITHOUT TAX
-    var isSelected: Bool
     
     var netPrice: Double {        // INCLUDING TAX
         return ((1 + self.tax/100) * self.basePrice)
@@ -44,13 +60,11 @@ class Product {
     init(title: String,
          quantity: Int,
          tax: Double,
-         basePrice: Double,
-         isSelected: Bool = false) {
+         basePrice: Double) {
         self.title = title
         self.quantity = quantity
         self.tax = tax
         self.basePrice = basePrice
-        self.isSelected = isSelected
     }
 }
 
@@ -60,11 +74,11 @@ protocol ProductListViewModelDelegate: class {
 
 class SectionModel {
     
-    var headerModel: Product
+    var headerModel: ProductHeaderModel
     var cellModels: [BartenderCellModel]
     var footerModel: Any?
     
-    init(headerModel: Product,
+    init(headerModel: ProductHeaderModel,
          cellModels: [BartenderCellModel],
          footerModel: Any? = nil) {
         self.headerModel = headerModel
@@ -86,29 +100,29 @@ class ProductListViewModel {
         self.delegate?.reloadData()
     }
     
-    func add(product: Product) {
+    func add(headerModel: ProductHeaderModel) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.title == product.title
+            return model.headerModel.product.title == headerModel.product.title
         }) {
             let sectionModel = self.sections[index]
-            sectionModel.headerModel.quantity += 1
+            sectionModel.headerModel.product.quantity += 1
             let bartenderModel = BartenderCellModel(time: "10:38 AM", action: "ADDED")
             sectionModel.cellModels.append(bartenderModel)
         } else {
             let bartenderModel = BartenderCellModel(time: "9:38 AM", action: "ADDED")
-            let sectionModel = SectionModel(headerModel: product, cellModels: [bartenderModel])
+            let sectionModel = SectionModel(headerModel: headerModel, cellModels: [bartenderModel])
             self.sections.append(sectionModel)
         }
         self.reloadData()
     }
     
-    func remove(product: Product) {
+    func remove(headerModel: ProductHeaderModel) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.title == product.title
+            return model.headerModel.product.title == headerModel.product.title
         }) {
             let sectionModel = self.sections[index]
-            sectionModel.headerModel.quantity -= 1
-            if sectionModel.headerModel.quantity < 1 {
+            sectionModel.headerModel.product.quantity -= 1
+            if sectionModel.headerModel.product.quantity < 1 {
                 self.sections.remove(at: index)
             } else {
                 let bartenderModel = BartenderCellModel(time: "1:00 PM", action: "REMOVED")
@@ -122,8 +136,8 @@ class ProductListViewModel {
         self.totalTax = 0.0
         self.grandTotal = 0.0
         self.sections.forEach {
-            self.totalTax += $0.headerModel.taxableAmount
-            self.grandTotal += $0.headerModel.grossPrice
+            self.totalTax += $0.headerModel.product.taxableAmount
+            self.grandTotal += $0.headerModel.product.grossPrice
         }
     }
     

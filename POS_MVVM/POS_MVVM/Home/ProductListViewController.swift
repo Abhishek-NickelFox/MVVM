@@ -39,10 +39,11 @@ class ProductListViewController: UIViewController {
     
     private func addModel(title: String) {
         let product = Product(title: title,
-                                quantity: 1,
-                                tax: 2.5,
-                                basePrice: 100.0)
-        self.viewModel.add(product: product)
+                              quantity: 1,
+                              tax: 2.5,
+                              basePrice: 100.0)
+        let headerModel = ProductHeaderModel(product: product, handler: nil)
+        self.viewModel.add(headerModel: headerModel)
     }
     
     private func updateBill() {
@@ -112,18 +113,18 @@ extension ProductListViewController: ProductListViewModelDelegate {
 extension ProductListViewController: ProductHeaderViewDelegate {
     
     func increaseQuantity(headerView: ProductHeaderView) {
-        guard let product = headerView.item else { return }
-        self.viewModel.add(product: product)
+        guard let headerModel = headerView.item else { return }
+        self.viewModel.add(headerModel: headerModel)
     }
     
     func decreaseQuantity(headerView: ProductHeaderView) {
         guard let product = headerView.item else { return }
-        self.viewModel.remove(product: product)
+        self.viewModel.remove(headerModel: product)
     }
     
     func didTap(headerView: ProductHeaderView) {
-        guard let model = headerView.item else { return }
-        model.isSelected = !model.isSelected
+        guard let headerModel = headerView.item else { return }
+        headerModel.isSelected = !headerModel.isSelected
         self.tableView.reloadData()
     }
 }

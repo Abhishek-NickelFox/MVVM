@@ -25,7 +25,7 @@ class ProductHeaderView: UITableViewHeaderFooterView {
     
     weak var delegate: ProductHeaderViewDelegate?
     
-    var item: Product? {
+    var item: ProductHeaderModel? {
         didSet {
             self.configure(item)
         }
@@ -38,13 +38,13 @@ class ProductHeaderView: UITableViewHeaderFooterView {
         self.bgView.addGestureRecognizer(gesture)
     }
     
-    private func configure(_ item: Product?) {
-        if let product = item {
-            self.titleLabel.text = product.title
-            self.quantityLabel.text = String(product.quantity)
-            self.netPriceLabel.text = String(product.netPrice)
-            self.taxLabel.text = String(product.tax)
-            self.totalLabel.text = String(product.grossPrice)
+    private func configure(_ item: ProductHeaderModel?) {
+        if let headerModel = item {
+            self.titleLabel.text = headerModel.product.title
+            self.quantityLabel.text = String(headerModel.product.quantity)
+            self.netPriceLabel.text = String(headerModel.product.netPrice)
+            self.taxLabel.text = String(headerModel.product.tax)
+            self.totalLabel.text = String(headerModel.product.grossPrice)
         }
     }
     
