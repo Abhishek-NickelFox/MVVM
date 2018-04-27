@@ -8,8 +8,6 @@
 
 import Foundation
 
-typealias ProductQuantityHandler = (_ isIncreasing: Bool, _ product: ProductHeaderModel) -> Void
-
 class BartenderCellModel {
     
     var name: String
@@ -27,14 +25,11 @@ class ProductHeaderModel {
     
     var product: Product
     var isSelected: Bool
-    var handler: ProductQuantityHandler?
     
     init(product: Product,
-         isSelected: Bool = false,
-         handler: ProductQuantityHandler? = nil) {
+         isSelected: Bool = false) {
         self.product = product
         self.isSelected = isSelected
-        self.handler = handler
     }
 }
 
@@ -100,9 +95,9 @@ class ProductListViewModel {
         self.delegate?.reloadData()
     }
     
-    func add(headerModel: ProductHeaderModel) {
+    func add(product: Product) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.product.title == headerModel.product.title
+            return model.headerModel.product.title == product.title
         }) {
             let sectionModel = self.sections[index]
             sectionModel.headerModel.product.quantity += 1
@@ -110,15 +105,16 @@ class ProductListViewModel {
             sectionModel.cellModels.append(bartenderModel)
         } else {
             let bartenderModel = BartenderCellModel(time: "9:38 AM", action: "ADDED")
+            let headerModel = ProductHeaderModel(product: product)
             let sectionModel = SectionModel(headerModel: headerModel, cellModels: [bartenderModel])
             self.sections.append(sectionModel)
         }
         self.reloadData()
     }
     
-    func remove(headerModel: ProductHeaderModel) {
+    func remove(product: Product) {
         if let index = self.sections.index(where: { (model) -> Bool in
-            return model.headerModel.product.title == headerModel.product.title
+            return model.headerModel.product.title == product.title
         }) {
             let sectionModel = self.sections[index]
             sectionModel.headerModel.product.quantity -= 1

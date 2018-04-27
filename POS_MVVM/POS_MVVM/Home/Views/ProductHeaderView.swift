@@ -9,6 +9,8 @@
 import UIKit
 
 protocol ProductHeaderViewDelegate: class {
+    func increaseQuantity(headerView: ProductHeaderView)
+    func decreaseQuantity(headerView: ProductHeaderView)
     func didTap(headerView: ProductHeaderView)
 }
 
@@ -51,14 +53,10 @@ class ProductHeaderView: UITableViewHeaderFooterView {
     }
     
     @IBAction func increaseQuantity(_ sender: UIButton) {
-        guard let headerModel = self.item,
-              let handler = headerModel.handler else { return }
-        handler(true, headerModel)
+        self.delegate?.increaseQuantity(headerView: self)
     }
     
     @IBAction func decreaseQuantity(_ sender: UIButton) {
-        guard let headerModel = self.item,
-            let handler = headerModel.handler else { return }
-        handler(false, headerModel)
+        self.delegate?.decreaseQuantity(headerView: self)
     }
 }
